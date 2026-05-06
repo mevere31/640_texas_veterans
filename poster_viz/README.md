@@ -11,6 +11,7 @@ This folder contains **standalone HTML embeds** (no build step) generated from `
 - `table16.html`: Top 20 industries employing Texas veterans (2023)
 - `table17.html`: Top 20 occupations of veterans in Texas (2023)
 - `table18.html`: Average yearly salary by educational attainment (Texas veterans, 2023)
+- `map_county_veterans_2023.html`: Interactive county choropleth (Texas veterans by county, 2023)
 
 ### How to embed in a digital poster
 
