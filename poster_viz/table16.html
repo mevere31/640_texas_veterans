@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Table 16 – Top Industries Employing Texas Veterans</title>
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+    <style>
+      html, body { height: 100%; margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
+      #chart { width: 100%; height: 100vh; min-height: 720px; }
+    </style>
+  </head>
+  <body>
+    <div id="chart"></div>
+    <script>
+      // Source: TWIC Veterans in Texas report (Dec 2025 update)
+      // Table 16: Top 20 Industries Employing Texas Veterans, 2023
+      const rows = [
+        { industry: "Construction", n: 59480, pct: 7.9 },
+        { industry: "Justice, Public Order, and Safety Activities", n: 34367, pct: 4.5 },
+        { industry: "Elementary and Secondary Schools", n: 31088, pct: 4.1 },
+        { industry: "National Security and International Affairs", n: 30102, pct: 4.0 },
+        { industry: "General Medical and Surgical Hospitals, and Specialty Hospitals", n: 26002, pct: 3.4 },
+        { industry: "Computer Systems Design and Related Services", n: 23888, pct: 3.2 },
+        { industry: "Truck Transportation", n: 19462, pct: 2.6 },
+        { industry: "Food Services and Drinking Places", n: 16547, pct: 2.2 },
+        { industry: "Architectural, Engineering, and Related Services", n: 13834, pct: 1.8 },
+        { industry: "Management, Scientific, and Technical Consulting Services", n: 12488, pct: 1.7 },
+        { industry: "Air Transportation", n: 12265, pct: 1.6 },
+        { industry: "Junior Colleges, Colleges, Universities, and Professional Schools", n: 12244, pct: 1.6 },
+        { industry: "Investigation and Security Services", n: 11535, pct: 1.5 },
+        { industry: "Support Activities for Mining", n: 10400, pct: 1.4 },
+        { industry: "Aircraft and Parts", n: 10316, pct: 1.4 },
+        { industry: "Warehouse Clubs, Supercenters, and other General Merchandise", n: 9787, pct: 1.3 },
+        { industry: "Support Activities for Transportation", n: 9284, pct: 1.2 },
+        { industry: "Administration Of Human Resource Programs", n: 9079, pct: 1.2 },
+        { industry: "Automotive Repair and Maintenance", n: 9029, pct: 1.2 },
+        { industry: "Postal Service", n: 8906, pct: 1.2 },
+      ];
+
+      // Sort descending by number for a clean horizontal bar chart.
+      rows.sort((a, b) => b.n - a.n);
+
+      const data = [{
+        type: "bar",
+        orientation: "h",
+        x: rows.map(r => r.n),
+        y: rows.map(r => r.industry),
+        customdata: rows.map(r => r.pct),
+        hovertemplate:
+          "<b>%{y}</b><br>" +
+          "Number employed: %{x:,}<br>" +
+          "Percent of veteran labor force: %{customdata:.1f}%<extra></extra>",
+        marker: { color: "#16a34a" }
+      }];
+
+      const layout = {
+        title: { text: "Table 16: Top 20 industries employing Texas veterans (2023)", x: 0.02 },
+        margin: { l: 420, r: 30, t: 70, b: 60 },
+        xaxis: { title: "Number of employed veterans", rangemode: "tozero" },
+        yaxis: { automargin: true },
+        paper_bgcolor: "white",
+        plot_bgcolor: "white",
+      };
+
+      Plotly.newPlot("chart", data, layout, { responsive: true, displayModeBar: false });
+    </script>
+  </body>
+</html>
+

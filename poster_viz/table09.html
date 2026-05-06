@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Table 9 – Median Age by Period of Service</title>
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+    <style>
+      html, body { height: 100%; margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
+      #chart { width: 100%; height: 100vh; min-height: 520px; }
+    </style>
+  </head>
+  <body>
+    <div id="chart"></div>
+    <script>
+      // Source: Veterans in Texas: A Demographic Study (TWIC), Dec 2025 update.
+      // Table 9: Median Age of Texas Veterans by Period of Service, 2023
+      const rows = [
+        { period: "Gulf War Era II", median_age: 37, total: 565182 },
+        { period: "Gulf War Era I",  median_age: 58, total: 435978 },
+        { period: "Vietnam",         median_age: 74, total: 442131 },
+        { period: "Korea",           median_age: 88, total: 43386  },
+        { period: "World War II",    median_age: 92, total: 9505   },
+        { period: "Other",           median_age: 92, total: 2642   },
+      ];
+
+      const data = [{
+        type: "bar",
+        x: rows.map(r => r.median_age),
+        y: rows.map(r => r.period),
+        orientation: "h",
+        text: rows.map(r => `${r.median_age}`),
+        textposition: "outside",
+        hovertemplate:
+          "<b>%{y}</b><br>" +
+          "Median age: %{x}<br>" +
+          "Total in service period: %{customdata:,}<extra></extra>",
+        customdata: rows.map(r => r.total),
+        marker: { color: "#2563eb" }
+      }];
+
+      const layout = {
+        title: { text: "Table 9: Median age of Texas veterans by period of service (2023)", x: 0.02 },
+        margin: { l: 180, r: 30, t: 70, b: 50 },
+        xaxis: { title: "Median age", rangemode: "tozero" },
+        yaxis: { automargin: true },
+        paper_bgcolor: "white",
+        plot_bgcolor: "white",
+      };
+
+      Plotly.newPlot("chart", data, layout, { responsive: true, displayModeBar: false });
+    </script>
+  </body>
+</html>
+

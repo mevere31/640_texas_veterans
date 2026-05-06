@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Table 14 – Labor Force by Age Group</title>
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+    <style>
+      html, body { height: 100%; margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
+      #chart { width: 100%; height: 100vh; min-height: 620px; }
+      .note { position: fixed; left: 12px; bottom: 10px; right: 12px; font-size: 12px; color: #475569; }
+    </style>
+  </head>
+  <body>
+    <div id="chart"></div>
+    <div class="note">
+      Note: “Total Employed” from the table is shown in hover; chart compares employed/unemployed counts for veterans vs nonveterans by age group.
+    </div>
+    <script>
+      // Source: TWIC Veterans in Texas report (Dec 2025 update)
+      // Table 14: Texas Veteran and Nonveteran Labor Force Participants by Age Group, 2023
+      //
+      // Parsed from the accessible PDF text. Percentages in the report are shown in hover labels.
+      const rows = [
+        {
+          age: "17–34",
+          total_employed_all: 5485930,
+          employed_vet_n: 120931, employed_vet_pct: 16.8,
+          unemployed_vet_n: 9306, unemployed_vet_pct: 26.9,
+          employed_nonvet_n: 4973120, employed_nonvet_pct: 37.2,
+          unemployed_nonvet_n: 382573, unemployed_nonvet_pct: 53.1
+        },
+        {
+          age: "35–54",
+          total_employed_all: 6325943,
+          employed_vet_n: 341124, employed_vet_pct: 47.3,
+          unemployed_vet_n: 13432, unemployed_vet_pct: 38.9,
+          employed_nonvet_n: 5735333, employed_nonvet_pct: 43.0,
+          unemployed_nonvet_n: 236054, unemployed_nonvet_pct: 32.8
+        },
+        {
+          age: "55–64",
+          total_employed_all: 2213151,
+          employed_vet_n: 161162, employed_vet_pct: 22.3,
+          unemployed_vet_n: 7098, unemployed_vet_pct: 20.5,
+          employed_nonvet_n: 1969717, employed_nonvet_pct: 14.8,
+          unemployed_nonvet_n: 75174, unemployed_nonvet_pct: 10.4
+        },
+        {
+          age: "65–74",
+          total_employed_all: 682428,
+          employed_vet_n: 73353, employed_vet_pct: 10.2,
+          unemployed_vet_n: 3268, unemployed_vet_pct: 9.5,
+          employed_nonvet_n: 582955, employed_nonvet_pct: 4.4,
+          unemployed_nonvet_n: 22852, unemployed_nonvet_pct: 3.2
+        },
+        {
+          age: "75+",
+          total_employed_all: 120746,
+          employed_vet_n: 24869, employed_vet_pct: 3.4,
+          unemployed_vet_n: 1445, unemployed_vet_pct: 4.2,
+          employed_nonvet_n: 91048, employed_nonvet_pct: 0.7,
+          unemployed_nonvet_n: 3384, unemployed_nonvet_pct: 0.5
+        }
+      ];
+
+      const x = rows.map(r => r.age);
+
+      function trace(name, values, color, custom) {
+        return {
+          type: "bar",
+          name,
+          x,
+          y: values,
+          marker: { color },
+          customdata: custom,
+          hovertemplate:
+            "<b>Age %{x}</b><br>" +
+            "%{fullData.name}: %{y:,}<br>" +
+            "Table % within group: %{customdata.pct:.1f}%<br>" +
+            "Total employed (all): %{customdata.total_employed_all:,}<extra></extra>"
+        };
+      }
+
+      const data = [
+        trace(
+          "Employed veterans",
+          rows.map(r => r.employed_vet_n),
+          "#1d4ed8",
+          rows.map(r => ({ pct: r.employed_vet_pct, total_employed_all: r.total_employed_all }))
+        ),
+        trace(
+          "Unemployed veterans",
+          rows.map(r => r.unemployed_vet_n),
+          "#60a5fa",
+          rows.map(r => ({ pct: r.unemployed_vet_pct, total_employed_all: r.total_employed_all }))
+        ),
+        trace(
+          "Employed nonveterans",
+          rows.map(r => r.employed_nonvet_n),
+          "#64748b",
+          rows.map(r => ({ pct: r.employed_nonvet_pct, total_employed_all: r.total_employed_all }))
+        ),
+        trace(
+          "Unemployed nonveterans",
+          rows.map(r => r.unemployed_nonvet_n),
+          "#cbd5e1",
+          rows.map(r => ({ pct: r.unemployed_nonvet_pct, total_employed_all: r.total_employed_all }))
+        ),
+      ];
+
+      const layout = {
+        title: { text: "Table 14: Labor force participants by age group (Texas, 2023)", x: 0.02 },
+        barmode: "group",
+        margin: { l: 70, r: 20, t: 70, b: 60 },
+        yaxis: { title: "Number of people", rangemode: "tozero" },
+        xaxis: { title: "Age group" },
+        legend: { orientation: "h", x: 0.02, y: 1.12 },
+        paper_bgcolor: "white",
+        plot_bgcolor: "white",
+      };
+
+      Plotly.newPlot("chart", data, layout, { responsive: true, displayModeBar: false });
+    </script>
+  </body>
+</html>
+

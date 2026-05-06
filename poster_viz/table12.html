@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Table 12 – Service-Connected Disability Ratings</title>
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+    <style>
+      html, body { height: 100%; margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
+      #chart { width: 100%; height: 100vh; min-height: 560px; }
+    </style>
+  </head>
+  <body>
+    <div id="chart"></div>
+    <script>
+      // Source: TWIC Veterans in Texas report (Dec 2025 update)
+      // Table 12: Percentages of Texas Veterans with Service-Connected Disability Ratings, 2023
+      const rows = [
+        { rating: "0 percent",                   n: 14887,  pct: 3.0  },
+        { rating: "10 or 20 percent",            n: 104341, pct: 20.7 },
+        { rating: "30 or 40 percent",            n: 62741,  pct: 12.5 },
+        { rating: "50 or 60 percent",            n: 65671,  pct: 13.1 },
+        { rating: "70, 80, 90, or 100 percent",  n: 237060, pct: 47.1 },
+        { rating: "Rating not reported",         n: 18501,  pct: 3.7  },
+      ];
+
+      const data = [{
+        type: "bar",
+        x: rows.map(r => r.pct),
+        y: rows.map(r => r.rating),
+        orientation: "h",
+        customdata: rows.map(r => r.n),
+        text: rows.map(r => `${r.pct.toFixed(1)}%`),
+        textposition: "outside",
+        hovertemplate:
+          "<b>%{y}</b><br>" +
+          "Percent: %{x:.1f}%<br>" +
+          "Number: %{customdata:,}<extra></extra>",
+        marker: { color: "#0ea5e9" }
+      }];
+
+      const layout = {
+        title: { text: "Table 12: Texas veterans’ service-connected disability ratings (2023)", x: 0.02 },
+        margin: { l: 260, r: 30, t: 70, b: 60 },
+        xaxis: { title: "Percent of Texas veterans", ticksuffix: "%", rangemode: "tozero" },
+        yaxis: { automargin: true },
+        paper_bgcolor: "white",
+        plot_bgcolor: "white",
+      };
+
+      Plotly.newPlot("chart", data, layout, { responsive: true, displayModeBar: false });
+    </script>
+  </body>
+</html>
+
