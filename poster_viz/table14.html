@@ -86,25 +86,25 @@
         trace(
           "Employed veterans",
           rows.map(r => r.employed_vet_n),
-          "#1d4ed8",
+          "#1f4d2e",
           rows.map(r => ({ pct: r.employed_vet_pct, total_employed_all: r.total_employed_all }))
         ),
         trace(
           "Unemployed veterans",
           rows.map(r => r.unemployed_vet_n),
-          "#60a5fa",
+          "#3d7a4b",
           rows.map(r => ({ pct: r.unemployed_vet_pct, total_employed_all: r.total_employed_all }))
         ),
         trace(
           "Employed nonveterans",
           rows.map(r => r.employed_nonvet_n),
-          "#64748b",
+          "#7fae86",
           rows.map(r => ({ pct: r.employed_nonvet_pct, total_employed_all: r.total_employed_all }))
         ),
         trace(
           "Unemployed nonveterans",
           rows.map(r => r.unemployed_nonvet_n),
-          "#cbd5e1",
+          "#dce8d8",
           rows.map(r => ({ pct: r.unemployed_nonvet_pct, total_employed_all: r.total_employed_all }))
         ),
       ];
