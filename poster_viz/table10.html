@@ -3,69 +3,74 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Table 10 – Disability by Veteran Status</title>
+    <title>Table 10 – Disability by veteran status</title>
     <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
     <style>
       html, body { height: 100%; margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
       #chart { width: 100%; height: 100vh; min-height: 560px; }
+      #err { position: fixed; left: 12px; top: 10px; right: 12px; padding: 10px; background: #fff1f2; color: #9f1239; border: 1px solid #fecdd3; border-radius: 8px; font-size: 13px; display: none; }
     </style>
   </head>
   <body>
+    <div id="err"></div>
     <div id="chart"></div>
     <script>
-      // Source: TWIC Veterans in Texas report (Dec 2025 update)
-      // Table 10: Percent of Veterans and Nonveterans (18+) Reporting a Disability in Texas, 2023
-      const rows = [
-        { disability: "Ambulatory difficulty",          vet_n: 216362, vet_pct: 14.4, nonvet_n: 1402067, nonvet_pct: 6.9 },
-        { disability: "Hearing difficulty",             vet_n: 213852, vet_pct: 14.3, nonvet_n: 712403,  nonvet_pct: 3.5 },
-        { disability: "Cognitive difficulty",           vet_n: 130971, vet_pct: 8.7,  nonvet_n: 972263,  nonvet_pct: 4.8 },
-        { disability: "Independent living difficulty",  vet_n: 123566, vet_pct: 8.2,  nonvet_n: 1011986, nonvet_pct: 5.0 },
-        { disability: "Self-care difficulty",           vet_n: 69482,  vet_pct: 4.6,  nonvet_n: 516575,  nonvet_pct: 2.5 },
-        { disability: "Vision difficulty",              vet_n: 71446,  vet_pct: 4.8,  nonvet_n: 623760,  nonvet_pct: 3.1 },
-      ];
+      (async function () {
+        const err = document.getElementById("err");
+        try {
+          const res = await fetch("data/table10.json", { cache: "no-store" });
+          if (!res.ok) throw new Error("Could not load data/table10.json — run texasvets_eda.R to export.");
+          const j = await res.json();
+          const rows = j.rows || [];
+          const yr = (j.meta && j.meta.year) ? String(j.meta.year) : "";
+          const src = (j.meta && j.meta.source) ? j.meta.source : "";
 
-      const y = rows.map(r => r.disability);
+          const y = rows.map((r) => r.disability);
+          const data = [
+            {
+              type: "bar",
+              orientation: "h",
+              name: "Veterans",
+              x: rows.map((r) => r.vet_pct),
+              y,
+              customdata: rows.map((r) => [r.vet_n, r.nonvet_n]),
+              hovertemplate:
+                "<b>%{y}</b><br>" +
+                "Veterans: %{x:.1f}% (%{customdata[0]:,.0f})<extra></extra>",
+              marker: { color: "#1f4d2e" }
+            },
+            {
+              type: "bar",
+              orientation: "h",
+              name: "Nonveterans",
+              x: rows.map((r) => r.nonvet_pct),
+              y,
+              customdata: rows.map((r) => [r.vet_n, r.nonvet_n]),
+              hovertemplate:
+                "<b>%{y}</b><br>" +
+                "Nonveterans: %{x:.1f}% (%{customdata[1]:,.0f})<extra></extra>",
+              marker: { color: "#b7c9b3" }
+            }
+          ];
 
-      const data = [
-        {
-          type: "bar",
-          orientation: "h",
-          name: "Veterans",
-          x: rows.map(r => r.vet_pct),
-          y,
-          customdata: rows.map(r => [r.vet_n, r.nonvet_n]),
-          hovertemplate:
-            "<b>%{y}</b><br>" +
-            "Veterans: %{x:.1f}% (%{customdata[0]:,})<extra></extra>",
-          marker: { color: "#1f4d2e" }
-        },
-        {
-          type: "bar",
-          orientation: "h",
-          name: "Nonveterans",
-          x: rows.map(r => r.nonvet_pct),
-          y,
-          customdata: rows.map(r => [r.vet_n, r.nonvet_n]),
-          hovertemplate:
-            "<b>%{y}</b><br>" +
-            "Nonveterans: %{x:.1f}% (%{customdata[1]:,})<extra></extra>",
-          marker: { color: "#b7c9b3" }
+          const layout = {
+            barmode: "group",
+            title: { text: "Reported disabilities (Texas, 18+)" + (yr ? " — " + yr : ""), x: 0.02 },
+            margin: { l: 220, r: 30, t: 70, b: 60 },
+            xaxis: { title: "Percent reporting", ticksuffix: "%", rangemode: "tozero" },
+            yaxis: { automargin: true },
+            legend: { orientation: "h", x: 0.02, y: 1.05 },
+            paper_bgcolor: "white",
+            plot_bgcolor: "white",
+            annotations: src ? [{ text: src, xref: "paper", yref: "paper", x: 0, y: -0.08, showarrow: false, font: { size: 11, color: "#64748b" } }] : []
+          };
+
+          Plotly.newPlot("chart", data, layout, { responsive: true, displayModeBar: false });
+        } catch (e) {
+          err.style.display = "block";
+          err.textContent = e.message || String(e);
         }
-      ];
-
-      const layout = {
-        barmode: "group",
-        title: { text: "Table 10: Reported disabilities in Texas (2023) – veterans vs nonveterans", x: 0.02 },
-        margin: { l: 220, r: 30, t: 70, b: 60 },
-        xaxis: { title: "Percent reporting disability", ticksuffix: "%", rangemode: "tozero" },
-        yaxis: { automargin: true },
-        legend: { orientation: "h", x: 0.02, y: 1.05 },
-        paper_bgcolor: "white",
-        plot_bgcolor: "white",
-      };
-
-      Plotly.newPlot("chart", data, layout, { responsive: true, displayModeBar: false });
+      })();
     </script>
   </body>
 </html>
-

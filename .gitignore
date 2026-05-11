@@ -1,0 +1,21 @@
+# R
+.Rhistory
+.RData
+.RDataTmp
+.Ruserdata
+*.Rproj
+.Rproj.user/
+
+# Local / generated
+outputs/
+poster_viz/.venv/
+__pycache__/
+*.pyc
+
+# IPUMS / extract artifacts (keep out of git; paths vary)
+usa_*.xml
+*_ddi.xml
+*.gz
+
+# OS
+.DS_Store
