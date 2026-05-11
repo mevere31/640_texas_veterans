@@ -1,20 +1,20 @@
 # EDA for Texas Veterans (ACS PUMS via IPUMS, 2024 extract)
 
-suppressPackageStartupMessages({
+#initializing libraries
   library(ipumsr)
   library(dplyr)
   library(ggplot2)
   library(scales)
   library(srvyr)
   library(tibble)
-})
+  library(tidyr)
 
-## API key: set IPUMS_API_KEY in your environment (do not commit secrets).
-my_key <- Sys.getenv("IPUMS_API_KEY", unset = "")
-if (!nzchar(my_key)) {
-  stop("Set environment variable IPUMS_API_KEY before running this script.")
+## IPUMS API key — do not hard-code your key in this file (do not commit it).
+## Once per session, run: Sys.setenv(IPUMS_API_KEY = "your_key_here")
+if (Sys.getenv("IPUMS_API_KEY") == "") {
+  stop("Set IPUMS_API_KEY before running, e.g. Sys.setenv(IPUMS_API_KEY = \"…\")", call. = FALSE)
 }
-set_ipums_api_key(my_key)
+set_ipums_api_key(Sys.getenv("IPUMS_API_KEY"))
 
 ## see list of data
 sample_list <- get_sample_info("usa")
@@ -160,8 +160,71 @@ table_7 <- tx_survey %>%
 
 print(table_7)
 
-# ---- Export JSON for poster_viz charts (optional) ----
-if (file.exists("poster_viz/export_poster_viz_data.R")) {
-  message("Sourcing poster_viz/export_poster_viz_data.R …")
-  source("poster_viz/export_poster_viz_data.R")
+# Table 9: Median age by period of service (veterans) — handy for Flourish / bar charts
+table_9 <- tx_survey %>%
+  filter(VETSTAT == 2) %>%
+  mutate(
+    period = case_when(
+      VET90X01 == 2 ~ "Gulf War era II",
+      VET01LTR == 2 ~ "Gulf War era I",
+      VETVIETN == 2 ~ "Vietnam era",
+      VET75X90 == 2 ~ "May 1975–Jul 1990",
+      VET55X64 == 2 ~ "Feb 1955–Jul 1964",
+      VETOTHER == 2 ~ "Other period",
+      TRUE ~ "Other / not classified"
+    )
+  ) %>%
+  group_by(period) %>%
+  summarize(
+    median_age = survey_median(AGE, na.rm = TRUE),
+    estimated_population = survey_total(),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(estimated_population))
+
+print(table_9)
+
+# ---- Export tables for Flourish / Excel ----
+# Creates outputs/texas_vets_tables_for_charts.xlsx (one sheet per table) if package writexl is installed;
+# otherwise writes one CSV per table into outputs/.
+out_dir <- file.path(getwd(), "outputs")
+dir.create(out_dir, showWarnings = FALSE)
+
+table_2_long <- table_2 %>%
+  pivot_longer(
+    cols = -is_vet,
+    names_to = "disability_type",
+    values_to = "percent_reporting"
+  )
+
+simplify_df <- function(x) {
+  d <- as.data.frame(x)
+  d[] <- lapply(d, function(col) if (is.numeric(col)) as.numeric(col) else col)
+  d
+}
+
+viz_sheets <- list(
+  T00_age_by_vet_status = simplify_df(table_00),
+  T01_SC_disability_rating = simplify_df(table_1),
+  T02_disability_wide = simplify_df(table_2),
+  T02_disability_long = simplify_df(table_2_long),
+  T03_labor_force_age = simplify_df(table_3),
+  T04_class_of_worker = simplify_df(table_4),
+  T05_top20_industries = simplify_df(table_5),
+  T06_top20_occupations = simplify_df(table_6),
+  T07_wage_by_education = simplify_df(table_7),
+  T09_median_age_period = simplify_df(table_9)
+)
+
+if (requireNamespace("writexl", quietly = TRUE)) {
+  out_xlsx <- file.path(out_dir, "texas_vets_tables_for_charts.xlsx")
+  writexl::write_xlsx(viz_sheets, out_xlsx)
+  message("Wrote workbook for charts: ", normalizePath(out_xlsx, winslash = "/"))
+} else {
+  message("Install writexl for a single Excel file: install.packages(\"writexl\")")
+  for (nm in names(viz_sheets)) {
+    fn <- file.path(out_dir, paste0(nm, ".csv"))
+    write.csv(viz_sheets[[nm]], fn, row.names = FALSE)
+  }
+  message("Wrote CSV files to: ", normalizePath(out_dir, winslash = "/"))
 }

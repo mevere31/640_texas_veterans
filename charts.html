@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Texas veterans — charts (Flourish)</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --text: #0f172a;
+        --muted: #475569;
+        --border: #e2e8f0;
+        --panel: #f8fafc;
+        --accent: #1f4d2e;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: var(--text);
+        line-height: 1.5;
+      }
+      header {
+        padding: 2rem 1.25rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+        background: linear-gradient(180deg, #f1f5f9 0%, #fff 100%);
+      }
+      header h1 {
+        margin: 0 0 0.35rem;
+        font-size: 1.35rem;
+        font-weight: 650;
+        color: var(--accent);
+      }
+      header p {
+        margin: 0;
+        max-width: 52rem;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+      main {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 1.25rem 1rem 3rem;
+      }
+      .steps {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 1rem 1.1rem 1.1rem;
+        margin-bottom: 2rem;
+        font-size: 0.92rem;
+      }
+      .steps ol {
+        margin: 0.35rem 0 0;
+        padding-left: 1.2rem;
+      }
+      .steps li { margin: 0.35rem 0; }
+      .steps code {
+        font-size: 0.86em;
+        background: #fff;
+        padding: 0.1em 0.35em;
+        border-radius: 4px;
+        border: 1px solid var(--border);
+      }
+      section.viz {
+        margin-bottom: 2.75rem;
+        scroll-margin-top: 1rem;
+      }
+      section.viz h2 {
+        margin: 0 0 0.35rem;
+        font-size: 1.05rem;
+        font-weight: 650;
+      }
+      section.viz .hint {
+        margin: 0 0 0.75rem;
+        font-size: 0.88rem;
+        color: var(--muted);
+      }
+      .embed-shell {
+        min-height: 120px;
+        border: 2px dashed var(--border);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        color: var(--muted);
+        font-size: 0.9rem;
+        text-align: center;
+      }
+      .embed-shell.filled {
+        border-style: solid;
+        border-color: transparent;
+        min-height: 0;
+        padding: 0;
+      }
+      footer {
+        padding: 1.5rem 1rem;
+        border-top: 1px solid var(--border);
+        font-size: 0.85rem;
+        color: var(--muted);
+        text-align: center;
+      }
+      footer a {
+        color: var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Texas veterans — interactive charts</h1>
+      <p>
+        These slots are for <strong>Flourish</strong> embeds. Build each chart in Flourish, publish it, then paste the embed snippet
+        into this file (see steps below). Load the Flourish script once at the bottom of this page.
+      </p>
+    </header>
+    <main>
+      <div class="steps">
+        <strong>How to add your Flourish chart</strong>
+        <ol>
+          <li>In Flourish, click <strong>Export &amp; publish</strong> → <strong>Embed in a website</strong>.</li>
+          <li>Copy the <code>&lt;div class="flourish-embed" …&gt;</code> line for your visual.</li>
+          <li>In this file, find the matching table section and <strong>replace</strong> the placeholder <code>&lt;div class="embed-shell"&gt;…&lt;/div&gt;</code> with your Flourish <code>div</code>.</li>
+          <li>
+            At the very bottom of this page, keep <strong>one</strong> line:
+            <code>&lt;script src="https://public.flourish.studio/resources/embed.js"&gt;&lt;/script&gt;</code>
+          </li>
+        </ol>
+        <p style="margin: 0.75rem 0 0; font-size: 0.88rem">
+          Official help:
+          <a href="https://help.flourish.studio/article/80-how-to-embed-a-chart-on-your-own-website" target="_blank" rel="noopener"
+            >How to embed a chart on your own website</a
+          >.
+        </p>
+      </div>
+
+      <section class="viz" id="table-9">
+        <h2>Table 9 — Median age by period of service</h2>
+        <p class="hint">Suggested: horizontal bar chart. Rows = period of service, value = median age.</p>
+        <div class="embed-shell">Paste Flourish embed for Table 9 here.</div>
+      </section>
+
+      <section class="viz" id="table-10">
+        <h2>Table 10 — Disability types (veterans vs nonveterans)</h2>
+        <p class="hint">Suggested: grouped bar chart.</p>
+        <div class="embed-shell">Paste Flourish embed for Table 10 here.</div>
+      </section>
+
+      <section class="viz" id="table-12">
+        <h2>Table 12 — Service-connected disability ratings</h2>
+        <p class="hint">Suggested: horizontal bar chart.</p>
+        <div class="embed-shell">Paste Flourish embed for Table 12 here.</div>
+      </section>
+
+      <section class="viz" id="table-14">
+        <h2>Table 14 — Labor force by age group</h2>
+        <p class="hint">Suggested: grouped bar chart (employed vs unemployed, veteran vs nonveteran).</p>
+        <div class="embed-shell">Paste Flourish embed for Table 14 here.</div>
+      </section>
+
+      <section class="viz" id="table-15">
+        <h2>Table 15 — Class of worker</h2>
+        <p class="hint">Suggested: pie or donut chart.</p>
+        <div class="embed-shell">Paste Flourish embed for Table 15 here.</div>
+      </section>
+
+      <section class="viz" id="table-16">
+        <h2>Table 16 — Top industries (employed veterans)</h2>
+        <p class="hint">Suggested: horizontal bar chart (long labels).</p>
+        <div class="embed-shell">Paste Flourish embed for Table 16 here.</div>
+      </section>
+
+      <section class="viz" id="table-17">
+        <h2>Table 17 — Top occupations (employed veterans)</h2>
+        <p class="hint">Suggested: horizontal bar chart.</p>
+        <div class="embed-shell">Paste Flourish embed for Table 17 here.</div>
+      </section>
+
+      <section class="viz" id="table-18">
+        <h2>Table 18 — Average wage by education</h2>
+        <p class="hint">Suggested: column chart.</p>
+        <div class="embed-shell">Paste Flourish embed for Table 18 here.</div>
+      </section>
+
+      <section class="viz" id="county-map">
+        <h2>County map — veterans by county</h2>
+        <p class="hint">
+          Upload <code>references/county_veterans_2023.csv</code> (or your own county file) to a Flourish
+          <strong>Choropleth map</strong> template for Texas counties, then paste the embed here.
+        </p>
+        <div class="embed-shell">Paste Flourish map embed here (optional).</div>
+      </section>
+    </main>
+    <footer>
+      <a href="https://flourish.studio/" target="_blank" rel="noopener">Flourish</a>
+      — student-friendly charts from a spreadsheet, no coding required.
+    </footer>
+    <!-- One script for all Flourish embeds on this page: -->
+    <script src="https://public.flourish.studio/resources/embed.js"></script>
+  </body>
+</html>

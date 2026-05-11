@@ -1,165 +1,31 @@
-<<<<<<< HEAD
-# Texas veterans (INFO 640)
+# Texas veterans (INFO 640 / 658)
 
-ACS PUMS–based exploratory analysis and a small **GitHub Pages** site.
+Reproducible analysis in R using ACS PUMS (IPUMS), plus **Flourish** for the interactive charts.
 
-| Path | Purpose |
-|------|--------|
-| `texasvets_eda.R` | Pull IPUMS microdata, build Texas `srvyr` survey object, EDA tables, and export chart JSON |
-| `poster_viz/export_poster_viz_data.R` | Write `poster_viz/data/table*.json` for the embeddable charts |
-| `poster_viz/*.html` | Plotly charts + county map (embed or open locally) |
-| `poster_viz/county_veterans_2023.csv` | County totals for the map (static; not from PUMS without PUMA→county allocation) |
-| `index.html` + `site/styles.css` | Optional landing / hero page for GitHub Pages |
+## Visualizations (Flourish)
 
-Set `IPUMS_API_KEY` before running `texasvets_eda.R`. See `poster_viz/README.md` for chart export and hosting.
-=======
-# 640_texas_veterans
-# Veterans in Texas (2024)  
-## A Reproducible Statistical Analysis of Demographic and Workforce Patterns
+1. Sign up at [Flourish](https://flourish.studio/) and create a project.
+2. Pick a template (bar chart, grouped bar, pie, choropleth map, etc.).
+3. **Data:** paste from Excel, upload a CSV, or copy from [data.census.gov](https://data.census.gov/) / your memo. You do **not** need the old Plotly HTML or JSON export.
+4. **Publish** the visual, then **Embed in a website** and copy the embed snippet.
+5. Optional: open **`charts.html`** locally, paste Flourish embed snippets into the placeholder sections if you want one HTML page that holds all embeds.
 
----
+More detail: **`scripts/README-viz.md`**.
 
-## Project Overview
+## R analysis
 
-This repository contains a fully reproducible statistical analysis of the Texas veteran population using 2024 data.
+| Path | Role |
+|------|------|
+| `scripts/texasvets_eda.R` | IPUMS pull, Texas filter, `srvyr` design, EDA tables, **export workbook for charts** |
 
-The project is designed as a **School of Information Final Project**, demonstrating:
+Set `IPUMS_API_KEY` (e.g. `Sys.setenv(IPUMS_API_KEY = "…")` before sourcing). Run with working directory at the **project root** so `outputs/` is created next to `scripts/`.
 
-- Research design and methodology development  
-- Statistical analysis in R  
-- API-based data acquisition  
-- Automated data cleaning and transformation  
-- Reproducible workflows  
-- Data visualization  
-- Interpretation of findings in a policy context  
+After the script runs, open **`outputs/texas_vets_tables_for_charts.xlsx`** (requires `writexl`; otherwise the same tables are written as separate CSVs in `outputs/`). Import a sheet into Flourish or copy into Google Sheets.
 
-The analytical framework is informed by the structure and methodology used in:
+## Reference data
 
-**Texas Workforce Investment Council — *Veterans in Texas: A Demographic Study (December 2025 Update).***
+- **`references/county_veterans_2023.csv`** — county counts for a Flourish Texas choropleth (see `charts.html`).
 
-This project adapts that framework to 2024 data and implements the full workflow in R.
+## License
 
----
-
-## Research Question
-
-**Primary Question:**
-
-How do demographic characteristics, disability status, and labor force outcomes differ between veterans and nonveterans in Texas in 2024?
-
-**Sub-questions:**
-
-- What is the demographic composition of Texas veterans?
-- How does labor force participation compare to nonveterans?
-- How do unemployment rates differ by veteran status?
-- How does disability prevalence vary across service eras?
-- What industries and occupations employ Texas veterans?
-- How do wages vary by education level?
-
----
-
-## Data Sources
-
-All data are obtained programmatically using IPUMS API.
-
-### American Community Survey (ACS)
-- Public Use Microdata Sample (PUMS)
-- Five-year estimates where appropriate
-- Variables include:
-  - Veteran status
-  - Age
-  - Sex
-  - Race/ethnicity
-  - Educational attainment
-  - Disability status
-  - Employment status
-  - Geographic identifiers
-
-### Bureau of Labor Statistics (BLS)
-- Current Population Survey (CPS)
-- Veteran unemployment statistics
-- Labor force data
-
----
-
-## Methodology
-
-This project follows a structured statistical workflow:
-
-### 1. Conceptual Framework
-
-Veterans are defined using standard federal definitions consistent with ACS methodology.
-
-Key analytic categories include:
-
-- Period of service
-- Civilian labor force participation
-- Disability status
-- Educational attainment
-- Industry and occupation classifications
-
----
-
-### 2. Data Processing Pipeline
-
-The workflow follows an **Extract → Transform → Analyze → Visualize** structure.
-
-#### Extract
-- Pull ACS data via IPUMS API
-
-#### Transform
-- Recode categorical variables
-- Harmonize service-period classifications
-- Create derived age groups
-- Aggregate geographic units
-- Clean missing values
-- Construct analysis-ready datasets
-
-#### Analyze
-- Descriptive statistics
-- Cross-tabulations
-- Median calculations
-- Group-level comparisons
-
-#### Visualize
-- Trend plots
-- Distribution charts
-- Comparative bar charts
-- Workforce breakdowns
-
-All steps use relative file paths to ensure portability and reproducibility.
-
----
-
-## Repository Structure
-640_texas-veterans/
-├── references/
-│ ├── Veterans-2025-Accessible-Report.pdf
-│ ├── county_veterans_2023.csv
-│
-├── scripts/
-│ ├── INFO 640 - Final Project Modeling Assignment.R
-│ ├── export_poster_viz_data.R
-│ ├── texasveterans_eda.R
-│ ├── table15.html
-│ ├── table18.html
-│ ├── table17.html
-│ ├── table16.html
-│ ├── table14.html
-│ ├── table12.html
-│ ├── table10.html
-│ ├── table09.html
-│ ├── map_county_veterans_2023.html
-│
-├── site/
-│ ├── styles.css
-│
-├── README.md
-├── index.html
-├── index.html
-├── LICENSE
-
-
----
-
->>>>>>> c7e2ecc0d97ba13609ea32357896ae267cace406
+See `LICENSE` if present in the repository.

@@ -8,7 +8,6 @@
 
 # Local / generated
 outputs/
-poster_viz/.venv/
 __pycache__/
 *.pyc
 
