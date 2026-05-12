@@ -9,7 +9,7 @@ library(scales)
 
 
 ## set API key from IPUMS
-my_key <- "59cba10d8a5da536fc06b59d536e526ebb5d4b7db95f2e98c322a958"
+my_key <- "your API key here"
 set_ipums_api_key(my_key)
 
 
