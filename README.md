@@ -141,7 +141,6 @@ The repository includes:
 - County-level veteran maps
 - Population trend visualizations
 - Comparative civilian vs veteran charts
-- Exported HTML tables
 - Presentation-ready graphics
 
 These outputs support both the analytical narrative and portfolio presentation requirements.
