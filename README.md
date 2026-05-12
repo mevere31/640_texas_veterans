@@ -45,6 +45,7 @@ The repository is organized as follows:
 │ ├── texasveterans_eda.R
 │
 ├── README.md
+├── charts.html
 └── LICENSE
 
 
@@ -143,7 +144,7 @@ The repository includes:
 - Comparative civilian vs veteran charts
 - Presentation-ready graphics
 
-These outputs support both the analytical narrative and portfolio presentation requirements.
+These outputs support both the analytical narrative and portfolio presentation requirements. These can be found in the charts.html file.
 
 ---
 
