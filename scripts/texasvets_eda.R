@@ -9,12 +9,9 @@
   library(tibble)
   library(tidyr)
 
-## IPUMS API key — do not hard-code your key in this file (do not commit it).
-## Once per session, run: Sys.setenv(IPUMS_API_KEY = "your_key_here")
-if (Sys.getenv("IPUMS_API_KEY") == "") {
-  stop("Set IPUMS_API_KEY before running, e.g. Sys.setenv(IPUMS_API_KEY = \"…\")", call. = FALSE)
-}
-set_ipums_api_key(Sys.getenv("IPUMS_API_KEY"))
+## set API key from IPUMS
+my_key <- "your API key here"
+set_ipums_api_key(my_key)
 
 ## see list of data
 sample_list <- get_sample_info("usa")
